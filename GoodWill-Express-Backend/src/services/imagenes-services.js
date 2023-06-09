@@ -1,7 +1,7 @@
 import config from '../../dbconfig-env.js';
 import sql from 'mssql';
 
-class ImagenesServices{
+class ImagenesServices {
     GetAll = async () => {
         let returnEntity = null;
         console.log('Estoy en: ImagenesServices.GetAll()');
@@ -10,38 +10,38 @@ class ImagenesServices{
             let pool = await sql.connect(config);
             let result = await pool.request().query('SELECT * FROM Imagenes')
             returnEntity = result.recordsets[0];
-        } catch(error) {
+        } catch (error) {
             console.log(error);
         }
         return returnEntity
     }
-    
+
     GetById = async (id) => {
         let returnEntity = null;
         console.log('Estoy en: ImagenesServices.GetById(id)');
-        try{
+        try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                   .input('pId', sql.Int, id)
-                                   .query('SELECT * FROM Imagenes WHERE id = @pId');
+                .input('pId', sql.Int, id)
+                .query('SELECT * FROM Imagenes WHERE id = @pId');
             returnEntity = result.recordsets[0][0];
-        } catch (error){
+        } catch (error) {
             console.log(error);
         }
         return returnEntity;
     }
-    
+
     Insert = async (img) => {
         let rowsAffected = 0;
         console.log('Estoy en: ImagenesServices.Insert(img)');
-        
+
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pIdImagenes', sql.Int, opinion?.idOpiniones ?? 0)
-                                    .input('pImagen', sql.VarChar, opinion?.puntos ?? '')
-                                    .input('pfkPublicacion', sql.Int, opinion?.fkPublicacion ?? 0)
-                                    .query('INSERT INTO Imagenes (imagen,fkPublicacion) VALUES (@pImagen,@pfkPublicacion)')
+                .input('pIdImagenes', sql.Int, opinion?.idOpiniones ?? 0)
+                .input('pImagen', sql.VarChar, opinion?.puntos ?? '')
+                .input('pfkPublicacion', sql.Int, opinion?.fkPublicacion ?? 0)
+                .query('INSERT INTO Imagenes (imagen,fkPublicacion) VALUES (@pImagen,@pfkPublicacion)')
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -55,15 +55,15 @@ class ImagenesServices{
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pIdImagenes', sql.Int, opinion?.idOpiniones ?? 0)
-                                    .input('pImagen', sql.VarChar, opinion?.puntos ?? '')
-                                    .input('pfkPublicacion', sql.Int, opinion?.fkPublicacion ?? 0)
-                                    .query('UPDATE Imagenes SET imagen = @pImagen, fkPublicacion = @pfkPublicacion WHERE idImagenes = @pIdImagenes')
+                .input('pIdImagenes', sql.Int, opinion?.idOpiniones ?? 0)
+                .input('pImagen', sql.VarChar, opinion?.puntos ?? '')
+                .input('pfkPublicacion', sql.Int, opinion?.fkPublicacion ?? 0)
+                .query('UPDATE Imagenes SET imagen = @pImagen, fkPublicacion = @pfkPublicacion WHERE idImagenes = @pIdImagenes')
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
         }
-        
+
         return rowsAffected;
     }
 
@@ -73,8 +73,8 @@ class ImagenesServices{
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pId', sql.Int, id)
-                                    .query('DELETE FROM Imagenes WHERE id = @pId');
+                .input('pId', sql.Int, id)
+                .query('DELETE FROM Imagenes WHERE id = @pId');
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
