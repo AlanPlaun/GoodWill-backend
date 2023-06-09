@@ -1,6 +1,5 @@
 import config from '../../dbconfig-env.js';
 import sql from 'mssql';
-import usuario from '../models/usuario.js';
 
 class UsuarioServices{
     GetAll = async () => {
@@ -39,7 +38,6 @@ class UsuarioServices{
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                                    .input('pIdUsuario', sql.Int, usuario?.idUsuario ?? 0)
                                     .input('pImg', sql.VarChar, usuario?.img ?? '')
                                     .input('pEmail', sql.VarChar, usuario?.email ?? '')
                                     .input('pNombreUsuario', sql.VarChar, usuario?.nombreUsuario ?? '')
@@ -88,7 +86,7 @@ class UsuarioServices{
 
     // DeleteById = async (id) => {
     //     let rowsAffected = 0;
-    //     console.log('Estoy en: MetrajeService.deleteById(id)');
+    //     console.log('Estoy en: UsuarioServices.deleteById(id)');
     //     try {
     //         let pool = await sql.connect(config);
     //         let result = await pool.request()

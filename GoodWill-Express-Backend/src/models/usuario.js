@@ -1,5 +1,5 @@
 class usuario {
-    idUsuario; //FALTA IDENTITY SPECIFICATION = YES EN SQL
+    idUsuario;
     img;
     email;
     nombreUsuario;

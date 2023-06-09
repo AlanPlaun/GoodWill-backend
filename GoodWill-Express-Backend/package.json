@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "type" : "module",
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "GoodWill-MateoG-AlanP-RamiroH",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
