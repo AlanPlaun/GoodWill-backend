@@ -1,0 +1,1 @@
+console.log("Hey muy buenas a todos. GUAPISIMOS! Aquí Vegetta777. En un gameplay directo de Planeta Vegetta.")
