@@ -59,7 +59,7 @@ class OpinionesServices {
                 .input('pPuntos', sql.Int, opinion?.puntos ?? 0)
                 .input('pfkUsuario', sql.Int, opinion?.fkUsuario ?? 0)
                 .input('pfkPublicacion', sql.Int, opinion?.fkPublicacion ?? 0)
-                .query('UPDATE Usuarios SET puntos = @pPuntos, fkUsuario = @fkUsuario, fkPublicacion = @pfkPublicacion WHERE idOpiniones = @pIdOpiniones')
+                .query('UPDATE Opiniones SET puntos = @pPuntos, fkUsuario = @fkUsuario, fkPublicacion = @pfkPublicacion WHERE idOpiniones = @pIdOpiniones')
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);

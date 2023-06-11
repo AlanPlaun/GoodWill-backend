@@ -1,3 +1,4 @@
+//Cannot use import statement outside a module
 import { config } from './dbconfig-env';
 import usuario from './src/models/usuario';
 import UsuarioServices from "./src/services/usuario-services";
