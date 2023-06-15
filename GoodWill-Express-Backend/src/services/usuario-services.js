@@ -1,5 +1,6 @@
+import res from 'express/lib/response.js';
 import config from '../../dbconfig-env.js';
-import sql from 'mssql';
+import sql, { rows } from 'mssql';
 
 class UsuarioServices {
     GetAll = async () => {
@@ -14,6 +15,22 @@ class UsuarioServices {
             console.log(error);
         }
         return returnEntity
+    }
+
+    GetByMailAndPassword = async (usuario) => {
+        let returnEntity = null;
+        console.log('Estoy en UsuarioServices.GetByMailAndPassword(usuario)')
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+            .input('pEmail', sql.VarChar, usuario?.email ?? '')
+            .input('pContraseña', sql.VarChar, usuario?.contraseña ?? '')
+            .query('SELECT * FROM Usuario WHERE email = @pEmail AND contraseña= @pContraseña');
+            returnEntity = result.recordsets[0][0];
+        } catch (error) {
+            console.log(error);
+        }
+        return returnEntity;
     }
 
     GetById = async (id) => {
