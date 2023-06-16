@@ -14,7 +14,7 @@ const usuarioServices = new UsuarioServices();
 //recibe la informacion
 app.post('/ingresosesion', async (req,res) =>{
     const MailContraseña = req.body;
-    console.log(MailContraseña);
+    console.log(MailContraseña.contraseña ,MailContraseña.email);
     const usuario = await usuarioServices.GetByMailAndPassword(MailContraseña);
     res.json({usuario});
 })

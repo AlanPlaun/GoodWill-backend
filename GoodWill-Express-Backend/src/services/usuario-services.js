@@ -18,7 +18,7 @@ class UsuarioServices {
     }
 
     GetByMailAndPassword = async (usuario) => {
-        let returnEntity = 'Usuario no encontrado';
+        let returnEntity = [];
         console.log('Estoy en UsuarioServices.GetByMailAndPassword(usuario)')
         try {
             let pool = await sql.connect(config);
