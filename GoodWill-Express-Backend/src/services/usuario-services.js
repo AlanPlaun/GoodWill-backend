@@ -1,6 +1,6 @@
 import res from 'express/lib/response.js';
 import config from '../../dbconfig-env.js';
-import sql, { rows } from 'mssql';
+import sql from 'mssql';
 
 class UsuarioServices {
     GetAll = async () => {
@@ -18,7 +18,7 @@ class UsuarioServices {
     }
 
     GetByMailAndPassword = async (usuario) => {
-        let returnEntity = null;
+        let returnEntity = 'Usuario no encontrado';
         console.log('Estoy en UsuarioServices.GetByMailAndPassword(usuario)')
         try {
             let pool = await sql.connect(config);

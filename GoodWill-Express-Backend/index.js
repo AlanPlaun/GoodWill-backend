@@ -1,17 +1,22 @@
-//Cannot use import statement outside a module
+
 import config  from './dbconfig-env.js';
 import usuario from './src/models/usuario.js';
 import UsuarioServices from "./src/services/usuario-services.js";
-//requiere cors para poder ser accedida desde el front
 import  Express  from "express";
+import cors from 'cors';
+
 const app = Express();
-//app.use(cors())
+app.use(cors());
+app.use(Express.json());
 const port = 5000;
+const usuarioServices = new UsuarioServices();
+
 //recibe la informacion
-app.get('/ingresosesion', async (req,res) =>{
+app.post('/ingresosesion', async (req,res) =>{
     const MailContraseña = req.body;
-    let data = await user.GetAll();
-    res.send(data);
+    console.log(MailContraseña);
+    const usuario = await usuarioServices.GetByMailAndPassword(MailContraseña);
+    res.json({usuario});
 })
 
 app.listen(port,() =>{
