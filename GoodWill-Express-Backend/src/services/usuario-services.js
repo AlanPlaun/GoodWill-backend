@@ -26,7 +26,11 @@ class UsuarioServices {
             .input('pEmail', sql.VarChar, usuario?.email ?? '')
             .input('pContraseña', sql.VarChar, usuario?.contraseña ?? '')
             .query('SELECT * FROM Usuario WHERE email = @pEmail AND contraseña= @pContraseña');
-            returnEntity = result.recordsets[0][0];
+            if (result.recordsets[0].length > 0) {
+                returnEntity = result.recordsets[0][0];
+            } else {
+                returnEntity = "No se encontró usuario";
+            }
         } catch (error) {
             console.log(error);
         }
