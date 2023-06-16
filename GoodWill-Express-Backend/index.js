@@ -12,7 +12,7 @@ const port = 5000;
 const usuarioServices = new UsuarioServices();
 
 //recibe la informacion
-app.post('/ingresosesion', async (req,res) =>{
+app.post('/login', async (req,res) =>{
     const MailContraseña = req.body;
     console.log(MailContraseña.contraseña ,MailContraseña.email);
     const usuario = await usuarioServices.GetByMailAndPassword(MailContraseña);
