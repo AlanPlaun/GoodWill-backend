@@ -11,6 +11,10 @@ app.use(Express.json());
 const port = 5000;
 const usuarioServices = new UsuarioServices();
 
+app.get('/login', async (req,res) =>{
+    res.json("hola");
+})
+
 //recibe la informacion
 app.post('/login', async (req,res) =>{
     const MailContraseña = req.body;
