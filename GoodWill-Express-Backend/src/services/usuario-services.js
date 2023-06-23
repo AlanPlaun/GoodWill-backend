@@ -18,24 +18,28 @@ class UsuarioServices {
     }
 
     GetByMailAndPassword = async (usuario) => {
-        let returnEntity = [];
-        console.log('Estoy en UsuarioServices.GetByMailAndPassword(usuario)')
+        let returnEntity = null;
+        console.log('Estoy en UsuarioServices.GetByMailAndPassword(usuario)');
         try {
-            let pool = await sql.connect(config);
-            let result = await pool.request()
+        let pool = await sql.connect(config);
+        let result = await pool
+            .request()
             .input('pEmail', sql.VarChar, usuario?.email ?? '')
             .input('pContraseña', sql.VarChar, usuario?.contraseña ?? '')
             .query('SELECT * FROM Usuario WHERE email = @pEmail AND contraseña= @pContraseña');
-            if (result.recordsets[0].length > 0) {
-                returnEntity = result.recordsets[0][0];
-            } else {
-                throw error;
-            }
+      
+          if (result.recordsets[0].length > 0) {
+            returnEntity = result.recordsets[0][0];
+          } else {
+            throw new Error('Credenciales inválidas');
+          }
         } catch (error) {
-            console.log(error);
+          console.log(error);
+          throw new Error('Error en la base de datos');
         }
+      
         return returnEntity;
-    }
+      };
 
     GetById = async (id) => {
         let returnEntity = null;

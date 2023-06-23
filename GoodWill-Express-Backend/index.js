@@ -2,7 +2,7 @@
 import config  from './dbconfig-env.js';
 import usuario from './src/models/usuario.js';
 import UsuarioServices from "./src/services/usuario-services.js";
-import jwtservice from "./src/middleware/middelware.js"
+import jwtservice from "./middleware/middelware.js"
 import  Express  from "express";
 import cors from 'cors';
 
@@ -29,9 +29,12 @@ app.post('/login', async (req,res) =>{
                 done: 'login correct'
             });
         }
+        else{
+            res.status(401).json("no se encontro al usuario")
+        }
     }
     else{
-        res.send("no se ingreso el usuario y la contraseña")
+        res.status(400).json("no se ingreso el usuario y la contraseña")
     }
 })
 app.use(auth.checktoken)

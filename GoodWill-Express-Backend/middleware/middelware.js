@@ -3,11 +3,11 @@ import moment from "moment"
 class jwtservice {
     createToken = (user) => {
         let payload = {
-            userId: user.id,
+            userId: user.id, //error
             createAt: moment().unix(),
             expiresAt:moment().add(1,'day').unix()
         }
-        return jwt.encode(payload,procces.env.TOKEN_KEY)
+        return jwt.encode(payload,process.env.TOKEN_KEY)
     }
     checktoken = (req,res,next) => {
         if(!req.headers['user_token']){
@@ -18,7 +18,7 @@ class jwtservice {
         const token = req.headers['user_token']
         let payload = null
         try {
-            payload = jwt.decode(token,precces.env.TOKEN_KEY)
+            payload = jwt.decode(token,procces.env.TOKEN_KEY)
         } catch(err){
             return res.json({
                 error:'invalid token'
