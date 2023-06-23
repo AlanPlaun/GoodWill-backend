@@ -29,7 +29,7 @@ class UsuarioServices {
             if (result.recordsets[0].length > 0) {
                 returnEntity = result.recordsets[0][0];
             } else {
-                returnEntity = "No se encontró usuario";
+                throw error;
             }
         } catch (error) {
             console.log(error);
@@ -119,6 +119,7 @@ class UsuarioServices {
     //     }
     //     return rowsAffected;
     // }
+
 }
 
 export default UsuarioServices;
