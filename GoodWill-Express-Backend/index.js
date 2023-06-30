@@ -22,10 +22,10 @@ app.post('/login', async (req,res) =>{
     const MailContraseña = req.body;
     if(MailContraseña){
         console.log(MailContraseña.contraseña ,MailContraseña.email);
-        const usuario = await usuarioServices.GetByMailAndPassword(MailContraseña);
+        const usuario = await usuarioServices.GetByMailAndPassword(MailContraseña)
         if(usuario){
             res.json({
-                succesful: auth.createToken(),
+                succesful: auth.createToken(usuario),
                 done: 'login correct'
             });
         }

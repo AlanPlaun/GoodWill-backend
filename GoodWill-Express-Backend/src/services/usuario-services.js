@@ -6,7 +6,6 @@ class UsuarioServices {
     GetAll = async () => {
         let returnEntity = null;
         console.log('Estoy en: UsuarioServices.GetAll()');
-
         try {
             let pool = await sql.connect(config);
             let result = await pool.request().query(`SELECT * FROM Usuario`)

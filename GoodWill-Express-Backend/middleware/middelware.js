@@ -7,7 +7,7 @@ class jwtservice {
             createAt: moment().unix(),
             expiresAt:moment().add(1,'day').unix()
         }
-        return jwt.encode(payload,process.env.TOKEN_KEY)
+        return jwt.sign(payload,process.env.TOKEN_KEY)
     }
     checktoken = (req,res,next) => {
         if(!req.headers['user_token']){
