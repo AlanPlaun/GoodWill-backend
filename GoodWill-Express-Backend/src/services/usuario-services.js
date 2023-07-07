@@ -23,8 +23,8 @@ class UsuarioServices {
           const result = await pool
             .request()
             .input('pEmail', sql.VarChar, usuario?.email ?? '')
-            .input('pContraseña', sql.VarChar, usuario?.contraseña ?? '')
-            .query('SELECT TOP 1 * FROM Usuario WHERE email = @pEmail AND contraseña = @pContraseña');
+            .input('pContrasena', sql.VarChar, usuario?.contrasena ?? '')
+            .query('SELECT TOP 1 * FROM Usuario WHERE email = @pEmail AND contraseña = @pContrasena');
       
           if (result.recordset.length > 0) {
             return result.recordset[0];

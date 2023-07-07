@@ -39,13 +39,11 @@ class PublicacionesServices {
             let pool = await sql.connect(config);
             let result = await pool.request()
                 .input('pTitulo', sql.VarChar, publicacion?.titulo ?? '')
-                .input('pCantCredito', sql.Int, publicacion?.cantCredito ?? 0)
                 .input('pDescripcion', sql.VarChar, publicacion?.descripcion ?? '')
                 .input('pUbicacion', sql.VarChar, publicacion?.ubicacion ?? '')
                 .input('pfkUsuario', sql.Int, publicacion?.fkUsuario ?? 0)
                 .input('pfkCategoria', sql.Int, publicacion?.fkCategoria ?? 0)
-
-                .query('INSERT INTO Publicaciones (titulo,cantCredito,descripcion,ubicacion,fkUsuario,fkCategoria) VALUES (@pTitulo,@pCantCredito,@pDescripcion,@pUbicacion,@pfkUsuario,@pfkCategoria)')
+                .query('INSERT INTO Publicaciones (titulo,descripcion,ubicacion,fkUsuario,fkCategoria) VALUES (@pTitulo,@pDescripcion,@pUbicacion,@pfkUsuario,@pfkCategoria)')
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
@@ -61,12 +59,11 @@ class PublicacionesServices {
             let result = await pool.request()
                 .input('pIdPublicacion', sql.Int, publicacion?.idPublicacion ?? 0)
                 .input('pTitulo', sql.VarChar, publicacion?.titulo ?? '')
-                .input('pCantCredito', sql.Int, publicacion?.cantCredito ?? 0)
                 .input('pDescripcion', sql.VarChar, publicacion?.descripcion ?? '')
                 .input('pUbicacion', sql.VarChar, publicacion?.ubicacion ?? '')
                 .input('pfkUsuario', sql.Int, publicacion?.fkUsuario ?? 0)
                 .input('pfkCategoria', sql.Int, publicacion?.fkCategoria ?? 0)
-                .query('UPDATE Publicaciones SET titulo = @pTitulo, cantCredito=@pCantCredito, descripcion=@pDescripcion, ubicacion=@pUbicacion, fkUsuario = @pfkUsuario, fkCategoria = @pfkCategoria WHERE idOpiniones = @pIdOpiniones')
+                .query('UPDATE Publicaciones SET titulo = @pTitulo, descripcion=@pDescripcion, ubicacion=@pUbicacion, fkUsuario = @pfkUsuario, fkCategoria = @pfkCategoria WHERE idOpiniones = @pIdOpiniones')
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
