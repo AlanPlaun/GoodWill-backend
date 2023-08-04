@@ -9,7 +9,7 @@ class jwtservice {
         }
         return jwt.sign(payload,process.env.TOKEN_KEY)
     }
-    checktoken = (req,res,next) => {
+    checktoken = (req,next,res) => {
         if(!req.headers['user_token']){
             return res.json({
                 error: "You must include the header"
@@ -30,5 +30,6 @@ class jwtservice {
         req.userId = payload.userId
         next();
     }
+    
 }
 export default jwtservice;

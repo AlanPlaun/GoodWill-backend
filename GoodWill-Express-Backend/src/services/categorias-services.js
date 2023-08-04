@@ -38,7 +38,7 @@ class CategoriasServices {
             let result = await pool.request()
                 .input('pfkTipoPublicacion', sql.Int, tipoPublicacion)
                 .query('SELECT * FROM Categorias WHERE fkTipoPublicacion = @pfkTipoPublicacion');
-            returnEntity = result.recordsets[0][0];
+            returnEntity = result.recordsets[0];
         } catch (error) {
             console.log(error);
         }

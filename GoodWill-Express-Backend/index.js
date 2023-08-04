@@ -37,7 +37,7 @@ app.post("/login", async (req, res) => {
       email,
       contrasena,
     });
-    console.log("LKOGIN")
+    console.log("LOGIN");
     if (usuario) {
       return res.json({
         successful: auth.createToken(usuario),
@@ -52,28 +52,13 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.use(auth.checktoken);
-
-//categoria
 app.post("/categoriasProducto", async (req, res) => {
-  console.log(categoriasServices.GetByProducto(1))
-  res.send("hola",categoriasServices.GetByProducto(1))
-})
+  res.json(await categoriasServices.GetByProducto(1))
+});
 
 //publicar producto
 app.post("/publicar", async (req, res) => {
-  const {Categoria, titulo, descripcion, Usuario} = req.body;
-  const ubicacion = null;
-  console.log(titulo, descripcion, ubicacion, fkUsuario, fkCategoria)
-  
-  const publicacion = await publicacionesServices.Insert({
-    titulo, 
-    descripcion, 
-    ubicacion, 
-    Usuario, 
-    Categoria
-  })
-  
+  // ...
 });
 app.listen(port, () => {
   console.log("ESCUCHANDO PORT 5000");
