@@ -60,6 +60,7 @@ app.post("/categoriasProducto", async (req, res) => {
 app.post("/publicar", async (req, res) => {
   // ...
 });
+
 app.listen(port, () => {
   console.log("ESCUCHANDO PORT 5000");
 });
