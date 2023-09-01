@@ -56,9 +56,26 @@ app.post("/categoriasProducto", async (req, res) => {
   res.json(await categoriasServices.GetByProducto(1))
 });
 
-//publicar producto
+//publicar producto (descifrar el token y obtener el id del usuario) pasar la informacion a la base de datos
 app.post("/publicar", async (req, res) => {
-  // ...
+  try {
+    const { token, nombre, descripcion, precio, categoria } = req.body;
+    console.log(req.body);
+    const { userId } = auth.checktoken(token);
+    console.log(userId);
+    //chequear lo de los nulls
+    const publicacion = await publicacionesServices.Insert({
+      nombre,
+      descripcion,
+      precio,
+      categoria,
+      userId,
+    });
+    return res.json(publicacion);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json("Error en el servidor");
+  }
 });
 
 app.listen(port, () => {
