@@ -6,6 +6,7 @@ import CategoriasServices from "./src/services/categorias-services.js";
 import jwtservice from "./middleware/middelware.js";
 import Express from "express";
 import cors from "cors";
+//import multer from "multer";
 
 const app = Express();
 app.use(cors());
@@ -16,9 +17,7 @@ const publicacionesServices = new PublicacionesServices();
 const categoriasServices = new CategoriasServices();
 const auth = new jwtservice();
 
-app.get("/login", async (req, res) => {
-  res.json("hola");
-});
+//
 
 //recibe la informacion
 app.post("/login", async (req, res) => {
@@ -59,13 +58,14 @@ app.post("/categoriasProducto", async (req, res) => {
 //publicar producto (descifrar el token y obtener el id del usuario) pasar la informacion a la base de datos
 app.post("/publicar", async (req, res) => {
   try {
-    const { token, nombre, descripcion, precio, categoria } = req.body;
     console.log(req.body);
+    const { token, titulo, descripcion, precio, categoria } = req.body;
+    console.log(token, titulo, descripcion, precio, categoria);
     const { userId } = auth.checktoken(token);
     console.log(userId);
     //chequear lo de los nulls
     const publicacion = await publicacionesServices.Insert({
-      nombre,
+      titulo,
       descripcion,
       precio,
       categoria,
