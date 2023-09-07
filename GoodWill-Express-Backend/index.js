@@ -24,7 +24,7 @@ app.get("/login", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { email, contrasena } = req.body;
-    
+    console.log(email, contrasena)
     // Input validation
     if (!email || !contrasena) {
       return res.status(400).json("No se ingresó el usuario y la contraseña");
