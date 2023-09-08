@@ -30,6 +30,20 @@ class CategoriasServices {
         }
         return returnEntity;
     }
+    GetBycategoria = async (categoria) => {
+        let returnEntity = null;
+        console.log('Estoy en: CategoriasServices.GetById(categoria)');
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                .input('pcategoria', sql.VarChar, categoria)
+                .query('SELECT * FROM Categorias WHERE categoria = @pcategoria');
+            returnEntity = result.recordsets[0][0];
+        } catch (error) {
+            console.log(error);
+        }
+        return returnEntity;
+    }
     GetByProducto = async (tipoPublicacion) => {
         let returnEntity = null;
         console.log('Estoy en: CategoriasServices.GetByProducto()');

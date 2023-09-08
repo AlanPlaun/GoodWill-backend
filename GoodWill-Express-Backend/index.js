@@ -6,7 +6,6 @@ import CategoriasServices from "./src/services/categorias-services.js";
 import jwtservice from "./middleware/middelware.js";
 import Express from "express";
 import cors from "cors";
-//import multer from "multer";
 
 const app = Express();
 app.use(cors());
@@ -17,13 +16,10 @@ const publicacionesServices = new PublicacionesServices();
 const categoriasServices = new CategoriasServices();
 const auth = new jwtservice();
 
-//
-
 //recibe la informacion
 app.post("/login", async (req, res) => {
   try {
     const { email, contrasena } = req.body;
-    console.log(email, contrasena)
     // Input validation
     if (!email || !contrasena) {
       return res.status(400).json("No se ingresó el usuario y la contraseña");
@@ -36,6 +32,7 @@ app.post("/login", async (req, res) => {
       email,
       contrasena,
     });
+
     console.log("LOGIN");
     if (usuario) {
       return res.json({
@@ -56,22 +53,18 @@ app.post("/categoriasProducto", async (req, res) => {
 });
 
 //publicar producto (descifrar el token y obtener el id del usuario) pasar la informacion a la base de datos
-app.post("/publicar", async (req, res) => {
+app.post("/publicar", auth.checktoken, async (req, res) => {
   try {
-    console.log(req.body);
-    const { token, titulo, descripcion, precio, categoria } = req.body;
-    console.log(token, titulo, descripcion, precio, categoria);
-    const { userId } = auth.checktoken(token);
-    console.log(userId);
-    //chequear lo de los nulls
+    const { titulo, descripcion, categoria } = req.body;
+    const cat = await categoriasServices.GetBycategoria(categoria)
     const publicacion = await publicacionesServices.Insert({
       titulo,
       descripcion,
-      precio,
-      categoria,
-      userId,
+      fkCategoria : cat.idCategoria,
+      fkUsuario: req.userId, 
     });
-    return res.json(publicacion);
+
+    return res.json("Publicado correctamente");
   } catch (error) {
     console.error(error);
     return res.status(500).json("Error en el servidor");

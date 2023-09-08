@@ -1,34 +1,28 @@
 import jwt from "jsonwebtoken"
 import moment from "moment"
 class jwtservice {
-    createToken = (user) => {
+    createToken = (user) => {   
+        console.log(user.idUsuario)
         let payload = {
-            userId: user.id, //error
+            userId: user.idUsuario, //error
             createAt: moment().unix(),
             expiresAt:moment().add(1,'day').unix()
         }
         return jwt.sign(payload,process.env.TOKEN_KEY)
     }
-    checktoken = (req,next,res) => {
-        if(!req.headers['user_token']){
-            return res.json({
-                error: "You must include the header"
-            });
-        }
-        const token = req.headers['user_token']
-        let payload = null
-        try {
-            payload = jwt.decode(token,procces.env.TOKEN_KEY)
-        } catch(err){
-            return res.json({
-                error:'invalid token'
-            })
-        }
-        if(moment().unix() > payload.expiresAt){
-            return res.json({error: 'Expired token'})
-        }
-        req.userId = payload.userId
-        next();
+    checktoken = (req,res,next) => {
+        const token = req.body.user_token; // o donde sea que esté el token
+    if (!token) {
+      return res.status(401).json({ error: 'Token missing' });
+    }
+
+    try {
+      const decodedToken = jwt.verify(token, process.env.TOKEN_KEY);
+      req.userId = decodedToken.userId;
+      next(); // Llama al siguiente middleware o ruta protegida
+    } catch (error) {
+      return res.status(401).json({ error: 'Invalid token' });
+    }
     }
     
 }
