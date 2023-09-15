@@ -51,7 +51,17 @@ app.post("/login", async (req, res) => {
 app.post("/categoriasProducto", async (req, res) => {
   res.json(await categoriasServices.GetByProducto(1))
 });
-
+app.get("/publicaciones", async (req, res) => {
+  console.log("sas")
+  res.json(await publicacionesServices.GetAll())
+});
+// No funciona :´v
+app.post("/usuario", auth.checktoken, async (req, res) => {
+    console.log(req)
+    const usuario = await usuarioServices.GetById(req.userId)
+    console.log(usuario);
+    res.json(usuario)
+})
 //publicar producto (descifrar el token y obtener el id del usuario) pasar la informacion a la base de datos
 app.post("/publicar", auth.checktoken, async (req, res) => {
   try {

@@ -10,7 +10,9 @@ class jwtservice {
         }
         return jwt.sign(payload,process.env.TOKEN_KEY)
     }
+    //cambiar para que el token pase por el authoritation header (no se :v)
     checktoken = (req,res,next) => {
+      console.log("hola x")
         const token = req.body.user_token; // o donde sea que esté el token
     if (!token) {
       return res.status(401).json({ error: 'Token missing' });
