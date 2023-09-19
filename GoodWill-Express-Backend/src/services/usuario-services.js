@@ -44,7 +44,7 @@ class UsuarioServices {
             let pool = await sql.connect(config);
             let result = await pool.request()
                 .input('pId', sql.Int, id)
-                .query('SELECT * FROM Usuario WHERE id = @pId');
+                .query('SELECT * FROM Usuario WHERE idUsuario = @pId');
             returnEntity = result.recordsets[0][0];
         } catch (error) {
             console.log(error);

@@ -6,6 +6,7 @@ import CategoriasServices from "./src/services/categorias-services.js";
 import jwtservice from "./middleware/middelware.js";
 import Express from "express";
 import cors from "cors";
+// import { use } from "passport";
 //import multer from "multer";
 
 const app = Express();
@@ -18,7 +19,15 @@ const categoriasServices = new CategoriasServices();
 const auth = new jwtservice();
 
 //
-
+app.get('/', async(req, res) => {
+  try {
+    const user = JSON.stringify(await usuarioServices.GetById(1))
+    console.log(user)
+  }
+  catch{
+    throw new Error()
+  }
+})
 //recibe la informacion
 app.post("/login", async (req, res) => {
   try {
