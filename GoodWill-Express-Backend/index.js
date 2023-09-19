@@ -55,6 +55,10 @@ app.get("/publicaciones", async (req, res) => {
   console.log("sas")
   res.json(await publicacionesServices.GetAll())
 });
+app.get("/categorias", async (req, res) => {
+  console.log("sas")
+  res.json(await categoriasServices.GetAll())
+});
 // No funciona :´v
 app.post("/usuario", auth.checktoken, async (req, res) => {
     console.log(req)
