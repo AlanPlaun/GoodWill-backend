@@ -59,15 +59,9 @@ app.get("/categorias", async (req, res) => {
   console.log("sas")
   res.json(await categoriasServices.GetAll())
 });
-// No funciona :´v
-app.post("/usuario", auth.checktoken, async (req, res) => {
-    console.log(req)
-    const usuario = await usuarioServices.GetById(req.userId)
-    console.log(usuario);
-    res.json(usuario)
-})
 //publicar producto (descifrar el token y obtener el id del usuario) pasar la informacion a la base de datos
 app.post("/publicar", auth.checktoken, async (req, res) => {
+  console.log("Hola")
   try {
     const { titulo, descripcion, categoria } = req.body;
     const cat = await categoriasServices.GetBycategoria(categoria)
@@ -78,13 +72,19 @@ app.post("/publicar", auth.checktoken, async (req, res) => {
       fkUsuario: req.userId, 
     });
 
-    return res.json("Publicado correctamente");
+    return res.json(publicacion);
   } catch (error) {
     console.error(error);
     return res.status(500).json("Error en el servidor");
   }
 });
-
+// No funciona :´v
+app.post("/usuario", auth.checktoken, async (req, res) => {
+  console.log(req)
+  const usuario = await usuarioServices.GetById(req.userId)
+  console.log(usuario);
+  return res.json(usuario)
+})
 app.listen(port, () => {
   console.log("ESCUCHANDO PORT 5000");
 });
