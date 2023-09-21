@@ -86,6 +86,21 @@ class PublicacionesServices {
         }
         return rowsAffected;
     }
+
+    getPublicacionJoined = async (id) => {
+        let returnEntity = null;
+        console.log('Estoy en: PublicacionesServices.getbyidusuario(id)');
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                .input('pId', sql.Int, id)
+                .query('SELECT Publicaciones.idPublicacion, Usuario.nombreUsuario, Publicaciones.titulo, Publicaciones.descripcion, Publicaciones.ubicacion, Usuario.img FROM Publicaciones INNER JOIN Usuario ON Publicaciones.fkUsuario = Usuario.idUsuario WHERE Publicaciones.fkUsuario = @pId');
+            returnEntity = result.recordsets[0];
+        } catch (error) {
+            console.log(error);
+        }
+        return returnEntity;
+    }
 }
 
 export default PublicacionesServices;
