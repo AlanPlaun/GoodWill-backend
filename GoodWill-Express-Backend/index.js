@@ -78,12 +78,24 @@ app.post("/publicar", auth.checktoken, async (req, res) => {
     return res.status(500).json("Error en el servidor");
   }
 });
-// No funciona :´v
+
 app.post("/usuario", auth.checktoken, async (req, res) => {
-  console.log(req)
-  const usuario = await usuarioServices.GetById(req.userId)
-  console.log(usuario);
-  return res.json(usuario)
+  try {
+    const usuario = await usuarioServices.GetById(req.userId);
+    const publicaciones = await publicacionesServices.getbyidusuario(req.userId);
+    
+    // Crear un objeto JSON que contenga ambas constantes
+    const responseData = {
+      usuario: usuario,
+      publicaciones: publicaciones
+    };
+
+    // Enviar el objeto JSON como respuesta
+    return res.json(responseData);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json("Error en el servidor");
+  }
 })
 app.listen(port, () => {
   console.log("ESCUCHANDO PORT 5000");
