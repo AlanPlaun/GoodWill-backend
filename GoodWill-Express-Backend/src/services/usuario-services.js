@@ -51,20 +51,6 @@ class UsuarioServices {
         }
         return returnEntity;
     }
-    GetAllDatosUsuario = async (id) => {
-        let returnEntity = null;
-        console.log('Estoy en: UsuarioServices.GetAllDatosUsuario(id)');
-        try {
-            let pool = await sql.connect(config);
-            let result = await pool.request()
-                .input('pId', sql.Int, id)
-                .query('SELECT * FROM Usuario WHERE idUsuario = @pId');
-            returnEntity = result.recordsets[0][0];
-        } catch (error) {
-            console.log(error);
-        }
-        return returnEntity;
-    }
     Insert = async (usuario) => {
         let rowsAffected = 0;
         console.log('Estoy en: UsuarioServices.Insert(usuario)');

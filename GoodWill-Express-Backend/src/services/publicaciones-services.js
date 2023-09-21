@@ -30,6 +30,20 @@ class PublicacionesServices {
         }
         return returnEntity;
     }
+    getbyidusuario = async (id) => {
+        let returnEntity = null;
+        console.log('Estoy en: PublicacionesServices.getbyidusuario(id)');
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                .input('pId', sql.Int, id)
+                .query('SELECT p.titulo,i.imagen FROM Publicaciones p LEFT JOIN Imagenes i ON p.idPublicacion = i.fkPublicacion WHERE p.fkUsuario = @pId');
+            returnEntity = result.recordsets[0];
+        } catch (error) {
+            console.log(error);
+        }
+        return returnEntity;
+    }
 
     Insert = async (publicacion) => {
         let rowsAffected = 0;
