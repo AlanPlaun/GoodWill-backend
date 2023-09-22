@@ -30,6 +30,7 @@ class ImagenesServices {
         }
         return returnEntity;
     }
+    
 
     Insert = async (img) => {
         let rowsAffected = 0;
@@ -38,9 +39,8 @@ class ImagenesServices {
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                .input('pIdImagenes', sql.Int, opinion?.idOpiniones ?? 0)
-                .input('pImagen', sql.VarChar, opinion?.puntos ?? '')
-                .input('pfkPublicacion', sql.Int, opinion?.fkPublicacion ?? 0)
+                .input('pImagen', sql.VarChar, img?.puntos ?? '')
+                .input('pfkPublicacion', sql.Int, img?.fkPublicacion ?? 0)
                 .query('INSERT INTO Imagenes (imagen,fkPublicacion) VALUES (@pImagen,@pfkPublicacion)')
             rowsAffected = result.rowsAffected;
         } catch (error) {

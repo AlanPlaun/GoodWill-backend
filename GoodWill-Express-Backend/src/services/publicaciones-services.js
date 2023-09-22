@@ -46,9 +46,9 @@ class PublicacionesServices {
     }
 
     Insert = async (publicacion) => {
-        let rowsAffected = 0;
         console.log('Estoy en: PublicacionesServices.Insert(publicacion)');
-
+        let insertedId = null; // Variable para almacenar la ID insertada
+    
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
@@ -57,13 +57,21 @@ class PublicacionesServices {
                 .input('pUbicacion', sql.VarChar, publicacion?.ubicacion ?? '')
                 .input('pfkUsuario', sql.Int, publicacion?.fkUsuario ?? 0)
                 .input('pfkCategoria', sql.Int, publicacion?.fkCategoria ?? 0)
-                .query('INSERT INTO Publicaciones (titulo,descripcion,ubicacion,fkUsuario,fkCategoria) VALUES (@pTitulo,@pDescripcion,@pUbicacion,@pfkUsuario,@pfkCategoria)')
-            rowsAffected = result.rowsAffected;
+                .output('pIdPublicacion', sql.Int) // Definir un parámetro de salida para la ID insertada
+                .query(`
+                    INSERT INTO Publicaciones (titulo, descripcion, ubicacion, fkUsuario, fkCategoria)
+                    OUTPUT inserted.idPublicacion -- Obtener la ID insertada
+                    VALUES (@pTitulo, @pDescripcion, @pUbicacion, @pfkUsuario, @pfkCategoria)
+                `);
+    
+            insertedId = result.recordsets[0][0]; // Obtener la ID insertada
         } catch (error) {
             console.log(error);
         }
-        return rowsAffected;
+        
+        return insertedId; // Devolver la ID insertada
     }
+    
 
     Update = async (publicacion) => {
         let rowsAffected = 0;

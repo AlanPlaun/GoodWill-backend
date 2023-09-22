@@ -3,6 +3,7 @@ import usuario from "./src/models/usuario.js";
 import UsuarioServices from "./src/services/usuario-services.js";
 import PublicacionesServices from "./src/services/publicaciones-services.js";
 import CategoriasServices from "./src/services/categorias-services.js";
+import imagenesServices from "./src/services/imagenes-services.js";
 import jwtservice from "./middleware/middelware.js";
 import Express from "express";
 import cors from "cors";
@@ -14,6 +15,7 @@ const port = 5000;
 const usuarioServices = new UsuarioServices();
 const publicacionesServices = new PublicacionesServices();
 const categoriasServices = new CategoriasServices();
+const imageneservices = new imagenesServices();
 const auth = new jwtservice();
 
 //recibe la informacion
@@ -53,7 +55,7 @@ app.post("/categoriasProducto", async (req, res) => {
 });
 app.get("/publicaciones", async (req, res) => {
   console.log("sas")
-  res.json(await publicacionesServices.GetAll())
+  res.json(await publicacionesServices.GetAllConImg())
 });
 app.get("/categorias", async (req, res) => {
   console.log("sas")
@@ -61,7 +63,6 @@ app.get("/categorias", async (req, res) => {
 });
 //publicar producto (descifrar el token y obtener el id del usuario) pasar la informacion a la base de datos
 app.post("/publicar", auth.checktoken, async (req, res) => {
-  console.log("Hola")
   try {
     const { titulo, descripcion, categoria } = req.body;
     const cat = await categoriasServices.GetBycategoria(categoria)
@@ -71,7 +72,19 @@ app.post("/publicar", auth.checktoken, async (req, res) => {
       fkCategoria : cat.idCategoria,
       fkUsuario: req.userId, 
     });
-
+    return res.json(publicacion);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json("Error en el servidor");
+  }
+});
+app.post("/subirimagen", async (req, res) => {
+  try {
+    const { imagen, idPublicacion } = req.body;
+    const publicacion = await imageneservices.Insert({
+      imagen,
+      idPublicacion,
+    });
     return res.json(publicacion);
   } catch (error) {
     console.error(error);
@@ -82,14 +95,13 @@ app.post("/publicar", auth.checktoken, async (req, res) => {
 app.post("/usuario", auth.checktoken, async (req, res) => {
   try {
     const usuario = await usuarioServices.GetById(req.userId);
-    const publicaciones = await publicacionesServices.getbyidusuario(req.userId);
+    const publicaciones = await   publicacionesServices.getbyidusuario(req.userId);
     
     // Crear un objeto JSON que contenga ambas constantes
     const responseData = {
       usuario: usuario,
       publicaciones: publicaciones
     };
-
     // Enviar el objeto JSON como respuesta
     return res.json(responseData);
   } catch (error) {
