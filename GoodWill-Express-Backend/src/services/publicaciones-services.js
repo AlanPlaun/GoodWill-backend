@@ -116,7 +116,7 @@ class PublicacionesServices {
             let pool = await sql.connect(config);
             let result = await pool.request()
                 .input('pId', sql.Int, id)
-                .query('SELECT Publicaciones.idPublicacion, Usuario.nombreUsuario, Publicaciones.titulo, Publicaciones.descripcion, Publicaciones.ubicacion, Usuario.img FROM Publicaciones INNER JOIN Usuario ON Publicaciones.fkUsuario = Usuario.idUsuario WHERE Publicaciones.fkUsuario = @pId');
+                .query('SELECT Publicaciones.idPublicacion, Usuario.nombreUsuario, Publicaciones.titulo, Publicaciones.descripcion, Publicaciones.ubicacion, Usuario.img,Imagenes.imagen FROM Publicaciones INNER JOIN Usuario ON Publicaciones.fkUsuario = Usuario.idUsuario inner join Imagenes on Imagenes.fkPublicacion = Publicaciones.idPublicacion');
             returnEntity = result.recordsets[0];
         } catch (error) {
             console.log(error);

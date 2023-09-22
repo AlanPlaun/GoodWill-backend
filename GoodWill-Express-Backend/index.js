@@ -55,7 +55,7 @@ app.post("/categoriasProducto", async (req, res) => {
 });
 app.get("/publicaciones", async (req, res) => {
   console.log("sas")
-  res.json(await publicacionesServices.GetAllConImg())
+  res.json(await publicacionesServices.getPublicacionJoined())
 });
 app.get("/categorias", async (req, res) => {
   console.log("sas")
