@@ -39,9 +39,9 @@ class ImagenesServices {
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                .input('pImagen', sql.VarChar, img?.puntos ?? '')
-                .input('pfkPublicacion', sql.Int, img?.fkPublicacion ?? 0)
-                .query('INSERT INTO Imagenes (imagen,fkPublicacion) VALUES (@pImagen,@pfkPublicacion)')
+                .input('pImagen', sql.VarChar, img?.imagen ?? '')
+                .input('pfkPublicacion', sql.Int, img?.idPublicacion ?? 0)
+                .query('INSERT INTO Imagenes (imagen, fkPublicacion) VALUES (@pImagen,@pfkPublicacion)')
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);
