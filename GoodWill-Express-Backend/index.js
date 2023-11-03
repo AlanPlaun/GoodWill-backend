@@ -50,18 +50,25 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/categoriasProducto", async (req, res) => {
-  res.json(await categoriasServices.GetByProducto(1))
-});
 app.get("/publicaciones", async (req, res) => {
   console.log("sas")
   res.json(await publicacionesServices.getPublicacionJoined())
-});
+}); 
 app.get("/categorias", async (req, res) => {
   console.log("sas")
   res.json(await categoriasServices.GetAll())
 });
-//publicar producto (descifrar el token y obtener el id del usuario) pasar la informacion a la base de datos
+
+app.post("/categoriasportipo", async (req, res) => {
+  try{
+    const{ tipo } = req.body
+    res.json(await categoriasServices.GetByTipo(tipo))
+  }catch(error) {
+    console.error(error)
+    return res.status(500).json("error en el servidor")
+  }
+});
+
 app.post("/publicar", auth.checktoken, async (req, res) => {
   try {
     const { titulo, descripcion, categoria } = req.body;

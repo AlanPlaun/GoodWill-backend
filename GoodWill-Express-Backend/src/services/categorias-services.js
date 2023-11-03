@@ -1,5 +1,6 @@
 import config from '../../dbconfig-env.js';
 import sql from 'mssql';
+import tipopublicacion from '../models/tipopublicacion.js';
 
 class CategoriasServices {
     GetAll = async () => {
@@ -44,19 +45,19 @@ class CategoriasServices {
         }
         return returnEntity;
     }
-    GetByProducto = async (tipoPublicacion) => {
+    GetByTipo = async (tipo) => {
         let returnEntity = null;
-        console.log('Estoy en: CategoriasServices.GetByProducto()');
+        console.log('Estoy en: CategoriasServices.getByTipo(tipo)');
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
-                .input('pfkTipoPublicacion', sql.Int, tipoPublicacion)
-                .query('SELECT * FROM Categorias WHERE fkTipoPublicacion = @pfkTipoPublicacion');
-            returnEntity = result.recordsets[0];
-        } catch (error) {
-            console.log(error);
-        }
-        return returnEntity;
+                .input('pNombre', sql.NChar , tipo)
+                .query('SELECT Categorias.categoria, Categorias.imagen, Categorias.idCategoria FROM Categorias INNER JOIN TipoPublicacion ON Categorias.fkTipoPublicacion = TipoPublicacion.idTipoPublicacion WHERE TipoPublicacion.nombre = @pnombre')
+            returnEntity = result.recordsets[0]
+            } catch(error){
+                console.log(error);
+            }
+            return returnEntity;
     }
 
     Insert = async (categoria1) => {
