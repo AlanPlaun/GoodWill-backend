@@ -111,7 +111,7 @@ class PublicacionesServices {
 
     getPublicacionJoined = async (id) => {
         let returnEntity = null;
-        console.log('Estoy en: PublicacionesServices.getbyidusuario(id)');
+        console.log('Estoy en: PublicacionesServices.publicacionesjoined(id)');
         try {
             let pool = await sql.connect(config);
             let result = await pool.request()
