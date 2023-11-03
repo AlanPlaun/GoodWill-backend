@@ -53,12 +53,20 @@ app.post("/login", async (req, res) => {
 app.post("/categoriasProducto", async (req, res) => {
   res.json(await categoriasServices.GetByProducto(1))
 });
+
 app.get("/publicaciones", async (req, res) => {
-  console.log("sas")
   res.json(await publicacionesServices.getPublicacionJoined())
 });
+
+//HACER UN FILTRO ENTRE SERVICIO Y PRODUCTO
+app.get("/publicaciones/servicio", async (req, res) => {
+  res.json(await publicacionesServices.getPublicacionJoined())
+});
+app.get("/publicaciones/producto", async (req, res) => {
+  res.json(await publicacionesServices.getPublicacionJoined())
+});
+
 app.get("/categorias", async (req, res) => {
-  console.log("sas")
   res.json(await categoriasServices.GetAll())
 });
 //publicar producto (descifrar el token y obtener el id del usuario) pasar la informacion a la base de datos
