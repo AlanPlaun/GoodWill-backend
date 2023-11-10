@@ -66,6 +66,15 @@ app.post("/categoriasportipo", async (req, res) => {
     return res.status(500).json("error en el servidor")
   }
 });
+app.post("/publicacionesportipo",async (req,res) => {
+  try{
+    const {tipo} = req.body
+    res.json(await publicacionesServices.getByTipo(tipo))
+  }catch(error){
+    console.error(error)
+    return res.status(500).json("error en el servidor")
+  }
+})
 
 app.post("/publicar", auth.checktoken, async (req, res) => {
   try {
