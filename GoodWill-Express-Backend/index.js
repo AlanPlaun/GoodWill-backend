@@ -78,10 +78,11 @@ app.post("/publicacionesportipo",async (req,res) => {
 
 app.post("/publicar", auth.checktoken, async (req, res) => {
   try {
-    const { titulo, descripcion, categoria } = req.body;
+    const { titulo, descripcion, categoria,puntos } = req.body;
     const cat = await categoriasServices.GetBycategoria(categoria)
     const publicacion = await publicacionesServices.Insert({
       titulo,
+      puntos,
       descripcion,
       fkCategoria : cat.idCategoria,
       fkUsuario: req.userId, 

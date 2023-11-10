@@ -53,15 +53,16 @@ class PublicacionesServices {
             let pool = await sql.connect(config);
             let result = await pool.request()
                 .input('pTitulo', sql.VarChar, publicacion?.titulo ?? '')
+                .input('pcantCredito', sql.Int, publicacion?.puntos ?? 0)
                 .input('pDescripcion', sql.VarChar, publicacion?.descripcion ?? '')
                 .input('pUbicacion', sql.VarChar, publicacion?.ubicacion ?? '')
                 .input('pfkUsuario', sql.Int, publicacion?.fkUsuario ?? 0)
                 .input('pfkCategoria', sql.Int, publicacion?.fkCategoria ?? 0)
                 .output('pIdPublicacion', sql.Int) // Definir un parámetro de salida para la ID insertada
                 .query(`
-                    INSERT INTO Publicaciones (titulo, descripcion, ubicacion, fkUsuario, fkCategoria)
+                    INSERT INTO Publicaciones (titulo,cantCredito, descripcion, ubicacion, fkUsuario, fkCategoria)
                     OUTPUT inserted.idPublicacion -- Obtener la ID insertada
-                    VALUES (@pTitulo, @pDescripcion, @pUbicacion, @pfkUsuario, @pfkCategoria)
+                    VALUES (@pTitulo,@pcantCredito, @pDescripcion, @pUbicacion, @pfkUsuario, @pfkCategoria)
                 `);
     
             insertedId = result.recordsets[0][0]; // Obtener la ID insertada

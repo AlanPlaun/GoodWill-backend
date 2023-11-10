@@ -52,7 +52,7 @@ class CategoriasServices {
             let pool = await sql.connect(config);
             let result = await pool.request()
                 .input('pNombre', sql.NChar , tipo)
-                .query('SELECT Categorias.categoria, Categorias.imagen, Categorias.idCategoria FROM Categorias INNER JOIN TipoPublicacion ON Categorias.fkTipoPublicacion = TipoPublicacion.idTipoPublicacion WHERE TipoPublicacion.nombre = @pnombre')
+                .query('SELECT Categorias.categoria, Categorias.imagen, Categorias.idCategoria,Categorias.puntos FROM Categorias INNER JOIN TipoPublicacion ON Categorias.fkTipoPublicacion = TipoPublicacion.idTipoPublicacion WHERE TipoPublicacion.nombre = @pnombre')
             returnEntity = result.recordsets[0]
             } catch(error){
                 console.log(error);
