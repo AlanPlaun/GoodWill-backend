@@ -129,7 +129,6 @@ app.post("/usuario", auth.checktoken, async (req, res) => {
 app.post("/contratar", auth.checktoken, async (req, res) => {
   try {
     const { idPublicacion, fecha } = req.body;
-    console.log(idPublicacion, fecha);
 
     // Verificar si el usuario ya ha contratado esta publicación
     const existingContratacion = await contratacionesServices.GetContratacionByUsuarioYPublicacion({
@@ -169,7 +168,7 @@ app.post("/contrataciones", auth.checktoken, async (req, res) => {
 });
 app.post("/finalizar", async (req, res) => {
   try {
-    const { idContrataciones, fechaFinalizado} = req.body;
+    const {idContrataciones, fechaFinalizado} = req.body;
     const contratacion = await contratacionesServices.finalizarContratacion({
       fechaFin: fechaFinalizado,
       estado: "finalizado",

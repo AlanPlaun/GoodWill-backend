@@ -135,7 +135,7 @@ class ContratacionesServices {
                 .input('pFechaFin', sql.Date, datos?.fechaFin ?? '')
                 .input('pEstado', sql.VarChar, datos?.estado ?? '')
                 .input('pIdContrataciones', sql.Int, datos?.idContrataciones ?? 0)
-                .query('UPDATE Contrataciones SET fechaFin = @pFechaFin, estado = @pEstado WHERE idContrataciones = @pIdContrataciones')
+                .query('UPDATE Contrataciones SET fechaFin = @pFechaFin, estado = @pEstado WHERE idContratacion = @pIdContrataciones')
             rowsAffected = result.rowsAffected;
         } catch (error) {
             console.log(error);

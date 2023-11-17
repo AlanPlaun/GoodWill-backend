@@ -133,7 +133,6 @@ class PublicacionesServices {
                 .input('pNombre', sql.NChar , tipo)
                 .query('SELECT Publicaciones.idPublicacion,Publicaciones.titulo,Publicaciones.cantCredito,Publicaciones.descripcion,Publicaciones.ubicacion,Publicaciones.fkUsuario,Publicaciones.fkCategoria,TipoPublicacion.nombre,Usuario.nombreUsuario,Usuario.img,Imagenes.imagen FROM Publicaciones INNER JOIN Categorias ON Publicaciones.fkCategoria = Categorias.idCategoria Inner join TipoPublicacion on Categorias.fkTipoPublicacion = TipoPublicacion.idTipoPublicacion INNER JOIN Usuario ON Publicaciones.fkUsuario = Usuario.idUsuario inner join Imagenes on Imagenes.fkPublicacion = Publicaciones.idPublicacion WHERE TipoPublicacion.nombre = @pNombre')
             returnEntity = result.recordsets[0];
-            console.log(returnEntity)
         }catch(error){
             console.log(error)
         }
