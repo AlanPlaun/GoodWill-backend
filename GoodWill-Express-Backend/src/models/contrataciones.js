@@ -3,8 +3,8 @@ class contrataciones {
     fechaInicio;
     fechaFin;
     fkUsuario1;
-    fkUsuario2;
     fkPublicacion;
+    estado;
 }
 
 export default contrataciones;

@@ -50,6 +50,30 @@ class ContratacionesServices {
         }
         return rowsAffected;
     }
+    InsertNuevaContratacion = async (contrato) => {
+        function convertirAFechaSQL(fecha) {
+            const partes = fecha.split('/');
+            const fechaSQL = `${partes[2]}-${partes[1]}-${partes[0]}`;
+            return fechaSQL;
+          }
+        const formattedDate = convertirAFechaSQL(contrato?.fechaInicio);
+        let rowsAffected = 0;
+        console.log('Estoy en: ContratacionesServices.Insert(contrato)');
+
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                .input('pFechaInicio', sql.Date, formattedDate ?? '') //FIJARSE SI ESTA BIEN EL VALOR POR DEFECTO
+                .input('pfkUsuario1', sql.Int, contrato?.fkUsuario1 ?? 0)
+                .input('pfkPublicacion', sql.Int, contrato?.fkPublicacion ?? 0)
+                .input('pEstado', sql.VarChar, contrato?.estado ?? '')
+                .query('INSERT INTO Contrataciones (fechaInicio, fkUsuario1, fkPublicacion, estado) VALUES (@pFechaInicio,@pfkUsuario1,@pfkPublicacion,@pEstado)')
+            rowsAffected = result.rowsAffected;
+        } catch (error) {
+            console.log(error);
+        }
+        return rowsAffected;
+    }
 
     Update = async (contrato) => {
         let rowsAffected = 0;
@@ -71,7 +95,54 @@ class ContratacionesServices {
 
         return rowsAffected;
     }
+    GetByIdUsuario = async (id) => {
+        let returnEntity = null;
+        console.log('Estoy en: ContratacionesServices.GetByIdUsuario(id)');
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                .input('pId', sql.Int, id)
+                .query('SELECT Publicaciones.*, Imagenes.imagen, Contrataciones.idContratacion, Contrataciones.fechaFin FROM Contrataciones JOIN Publicaciones ON Contrataciones.fkPublicacion = Publicaciones.idPublicacion LEFT JOIN Imagenes ON Publicaciones.idPublicacion = Imagenes.fkPublicacion WHERE Contrataciones.fkUsuario1 = @pId');
+            returnEntity = result.recordsets[0];
+            console.log(returnEntity)
+        } catch (error) {
+            console.log(error);
+        }
+        return returnEntity;
+    }
+    GetContratacionByUsuarioYPublicacion = async (datos) => {
+        let returnEntity = null;
+        console.log('Estoy en: ContratacionesServices.GetContratacionByUsuarioYPublicacion(datos)');
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                .input('pFkUsuario1', sql.Int, datos?.fkUsuario1 ?? 0)
+                .input('pFkPublicacion', sql.Int, datos?.fkPublicacion ?? 0)
+                .query('SELECT * FROM Contrataciones WHERE fkUsuario1 = @pFkUsuario1 AND fkPublicacion = @pFkPublicacion');
+            returnEntity = result.recordsets[0][0];
+        } catch (error) {
+            console.log(error);
+        }
+        return returnEntity;
+    }
+    
+    finalizarContratacion = async (datos) => {
+        let rowsAffected = 0;
+        console.log('Estoy en: ContratacionesServices.finalizarContratacion(datos)');
+        try {
+            let pool = await sql.connect(config);
+            let result = await pool.request()
+                .input('pFechaFin', sql.Date, datos?.fechaFin ?? '')
+                .input('pEstado', sql.VarChar, datos?.estado ?? '')
+                .input('pIdContrataciones', sql.Int, datos?.idContrataciones ?? 0)
+                .query('UPDATE Contrataciones SET fechaFin = @pFechaFin, estado = @pEstado WHERE idContrataciones = @pIdContrataciones')
+            rowsAffected = result.rowsAffected;
+        } catch (error) {
+            console.log(error);
+        }
 
+        return rowsAffected;
+    }
     DeleteById = async (id) => {
         let rowsAffected = 0;
         console.log('Estoy en: ContratacionesServices.deleteById(id)');

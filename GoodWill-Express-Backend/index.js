@@ -7,6 +7,7 @@ import imagenesServices from "./src/services/imagenes-services.js";
 import jwtservice from "./middleware/middelware.js";
 import Express from "express";
 import cors from "cors";
+import ContratacionesServices from "./src/services/contrataciones-services.js";
 
 const app = Express();
 app.use(cors());
@@ -16,6 +17,7 @@ const usuarioServices = new UsuarioServices();
 const publicacionesServices = new PublicacionesServices();
 const categoriasServices = new CategoriasServices();
 const imageneservices = new imagenesServices();
+const contratacionesServices = new ContratacionesServices();
 const auth = new jwtservice();
 
 //recibe la informacion
@@ -124,6 +126,62 @@ app.post("/usuario", auth.checktoken, async (req, res) => {
     return res.status(500).json("Error en el servidor");
   }
 })
+app.post("/contratar", auth.checktoken, async (req, res) => {
+  try {
+    const { idPublicacion, fecha } = req.body;
+    console.log(idPublicacion, fecha);
+
+    // Verificar si el usuario ya ha contratado esta publicación
+    const existingContratacion = await contratacionesServices.GetContratacionByUsuarioYPublicacion({
+      fkUsuario1: req.userId,
+      fkPublicacion: idPublicacion,
+    });
+
+    if (existingContratacion) {
+      // El usuario ya ha contratado esta publicación
+      return res.json({ haContratado: true });
+    }else {
+      // Si el usuario no ha contratado esta publicación, procedemos con la contratación
+      const usuario = await usuarioServices.GetById(req.userId);
+      const contratacion = await contratacionesServices.InsertNuevaContratacion({
+        fechaInicio: fecha,
+        fkUsuario1: usuario.idUsuario,
+        fkPublicacion: idPublicacion,
+        estado: "pendiente",
+      });
+      return res.json(contratacion);
+    }
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json("Error en el servidor");
+  }
+});
+app.post("/contrataciones", auth.checktoken, async (req, res) => {
+  try {
+    const usuario = await usuarioServices.GetById(req.userId);
+    const contrataciones = await contratacionesServices.GetByIdUsuario(usuario.idUsuario);
+    return res.json(contrataciones);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json("Error en el servidor");
+  }
+});
+app.post("/finalizar", async (req, res) => {
+  try {
+    const { idContrataciones, fechaFinalizado} = req.body;
+    const contratacion = await contratacionesServices.finalizarContratacion({
+      fechaFin: fechaFinalizado,
+      estado: "finalizado",
+      idContrataciones: idContrataciones,
+    });
+    return res.json(contratacion);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json("Error en el servidor");
+  }
+}); 
+
 app.listen(port, () => {
   console.log("ESCUCHANDO PORT 5000");
 });
